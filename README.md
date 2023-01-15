@@ -60,12 +60,14 @@ I'm using a basic Keycloak setup for this demo.
 ```
 docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:20.0.3 start-dev
 ```
+
 Be aware I'm providing an admin user 'admin/admin' via env parameters.
 2. Create Realm
 ![](C:\diego\workspace\spring-security-poc\doc\oauth2-client\keycloak-create-realm.png)
 ![](doc/oauth2-client/keycloak-realm-poc.png)
 3. Configure client
 ![](doc/oauth2-client/keycloak-client.png)
+
 4. Configure the client provider
 ```
 spring.security.oauth2.client.registration.keycloak.client-id=spring-security-poc
@@ -75,9 +77,10 @@ spring.security.oauth2.client.registration.keycloak.scope=openid
 spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8080/realms/poc
 spring.security.oauth2.client.provider.keycloak.user-name-attribute=preferred_username
 ```
+
 5. Create a user
 ![](doc/oauth2-client/keycloak-create-user.png)
-6. 
+
 ## Restricting access by roles
 // TODO
 
