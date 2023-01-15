@@ -15,7 +15,7 @@ and then the authorization server calls the client back at a defined URL.
 1. Configure authorization server
 https://github.com/settings/applications/new
 ![](doc/oauth2-client/github-security-config.png)
-![](doc/oauth2-client/register-oauth2-app-github.png)
+![](doc/oauth2-client/github-register-oauth2-app.png)
 
 2. Create Spring Boot Application with the following dependencies:
 ```
@@ -54,13 +54,36 @@ spring.security.oauth2.client.registration.github.client-secret=[the secret I go
 ```
 
 ## Single sign-on application, Keycloak as authorization server
-// TODO
+I'm using a basic Keycloak setup for this demo.
 
+1. Run Keycloak
+```
+docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:20.0.3 start-dev
+```
+Be aware I'm providing an admin user 'admin/admin' via env parameters.
+2. Create Realm
+![](C:\diego\workspace\spring-security-poc\doc\oauth2-client\keycloak-create-realm.png)
+![](doc/oauth2-client/keycloak-realm-poc.png)
+3. Configure client
+![](doc/oauth2-client/keycloak-client.png)
+4. Configure the client provider
+```
+spring.security.oauth2.client.registration.keycloak.client-id=spring-security-poc
+spring.security.oauth2.client.registration.keycloak.clientName=Keycloak
+spring.security.oauth2.client.registration.keycloak.authorization-grant-type=authorization_code
+spring.security.oauth2.client.registration.keycloak.scope=openid
+spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8080/realms/poc
+spring.security.oauth2.client.provider.keycloak.user-name-attribute=preferred_username
+```
+5. Create a user
+![](doc/oauth2-client/keycloak-create-user.png)
+6. 
 ## Restricting access by roles
 // TODO
 
-# References
 
+# References
 Spring Security in Action - https://learning.oreilly.com/library/view/spring-security-in
 WebSecurityConfigurerAdapter deprecation - https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter
-https://docs.spring.io/spring-security/site/docs/5.2.12.RELEASE/reference/html/oauth2.html
+Spring Oauth2 - https://docs.spring.io/spring-security/site/docs/5.2.12.RELEASE/reference/html/oauth2.html
+Keycloak basic setup - https://www.keycloak.org/getting-started/getting-started-docker
